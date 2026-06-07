@@ -62,9 +62,26 @@ public class IndexController {
         List<Category> categories = categoryService.list();
         List<Article> recentArticles = articleService.pageWithCategory(1, 5, null).getRecords();
 
+        // 热门文章（按 view_count 降序）
+        LambdaQueryWrapper<Article> hotWrapper = new LambdaQueryWrapper<>();
+        hotWrapper.eq(Article::getStatus, "PUBLISHED");
+        hotWrapper.orderByDesc(Article::getViewCount);
+        hotWrapper.last("LIMIT 5");
+        List<Article> hotArticles = articleService.list(hotWrapper);
+
+        // 统计数据
+        long totalArticles = articleService.count(
+            new LambdaQueryWrapper<Article>().eq(Article::getStatus, "PUBLISHED"));
+        long totalCategories = categoryService.count();
+        long totalComments = commentService.count();
+
         model.addAttribute("articles", articles);
         model.addAttribute("categories", categories);
         model.addAttribute("recentArticles", recentArticles);
+        model.addAttribute("hotArticles", hotArticles);
+        model.addAttribute("totalArticles", totalArticles);
+        model.addAttribute("totalCategories", totalCategories);
+        model.addAttribute("totalComments", totalComments);
         return "index";
     }
 

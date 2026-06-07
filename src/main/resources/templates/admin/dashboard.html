@@ -10,26 +10,23 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand fw-bold" th:href="@{/}">MyBlog</a>
+            <a class="navbar-brand" th:href="@{/}">MyBlog</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/}">首页</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" th:href="@{/admin}">管理</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/}">首页</a></li>
+                    <li class="nav-item"><a class="nav-link active" th:href="@{/admin}">管理</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/articles}">文章</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/categories}">分类</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/comments}">评论</a></li>
                 </ul>
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <span class="navbar-text text-white me-3">
-                            <span sec:authentication="principal.username">用户名</span>
-                        </span>
+                        <span class="navbar-text text-white me-3">👋 <span sec:authentication="principal.username">user</span></span>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
                         <a class="nav-link" th:href="@{/logout}">退出</a>
@@ -40,72 +37,106 @@
     </nav>
 
     <main class="container mt-4 mb-5">
-        <h2 class="mb-4">管理后台</h2>
+        <div class="dashboard-welcome">
+            <h2>👋 欢迎回来，<span sec:authentication="principal.username">admin</span></h2>
+            <p>在这里管理你的博客内容，开启创作之旅 ✨</p>
+        </div>
 
-        <!-- Stats Cards -->
         <div class="row dashboard-cards mb-4">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="card">
-                    <div class="card-body text-center">
-                        <div class="card-title">文章总数</div>
-                        <div class="card-value" th:text="${articleCount}">0</div>
+                    <div class="card-body">
+                        <div class="card-title">📝 文章总数</div>
+                        <div class="card-value" th:text="${articleCount} ?: '0'">0</div>
+                        <div class="card-trend">活跃创作中</div>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 col-6 mb-3">
                 <div class="card">
-                    <div class="card-body text-center">
-                        <div class="card-title">评论总数</div>
-                        <div class="card-value" th:text="${commentCount}">0</div>
+                    <div class="card-body">
+                        <div class="card-title">💬 评论总数</div>
+                        <div class="card-value" th:text="${commentCount} ?: '0'">0</div>
+                        <div class="card-trend">用户互动</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">👥 注册用户</div>
+                        <div class="card-value" th:text="${userCount} ?: '0'">0</div>
+                        <div class="card-trend">社区增长</div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">👁️ 总阅读量</div>
+                        <div class="card-value" th:text="${viewCount} ?: '0'">0</div>
+                        <div class="card-trend">流量统计</div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Quick Links -->
+        <div class="section-header">
+            <h2>🚀 快捷操作</h2>
+        </div>
         <div class="admin-quick-links">
-            <h4 class="mb-3">快捷操作</h4>
             <div class="row">
                 <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">写文章</h5>
-                            <a th:href="@{/admin/article/new}" class="btn btn-primary btn-sm">前往</a>
+                    <a th:href="@{/admin/article/new}" style="text-decoration:none;color:inherit;">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div style="font-size:2.4rem;margin-bottom:8px;">✍️</div>
+                                <h5 class="card-title">写新文章</h5>
+                                <p class="card-text text-muted">记录灵感，分享想法</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">管理文章</h5>
-                            <a th:href="@{/admin/articles}" class="btn btn-outline-primary btn-sm">前往</a>
+                    <a th:href="@{/admin/articles}" style="text-decoration:none;color:inherit;">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div style="font-size:2.4rem;margin-bottom:8px;">📚</div>
+                                <h5 class="card-title">管理文章</h5>
+                                <p class="card-text text-muted">编辑、删除、置顶</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">管理分类</h5>
-                            <a th:href="@{/admin/categories}" class="btn btn-outline-primary btn-sm">前往</a>
+                    <a th:href="@{/admin/categories}" style="text-decoration:none;color:inherit;">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div style="font-size:2.4rem;margin-bottom:8px;">📁</div>
+                                <h5 class="card-title">管理分类</h5>
+                                <p class="card-text text-muted">组织文章结构</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
                 <div class="col-md-3 mb-3">
-                    <div class="card">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">管理评论</h5>
-                            <a th:href="@{/admin/comments}" class="btn btn-outline-primary btn-sm">前往</a>
+                    <a th:href="@{/admin/comments}" style="text-decoration:none;color:inherit;">
+                        <div class="card">
+                            <div class="card-body text-center">
+                                <div style="font-size:2.4rem;margin-bottom:8px;">💬</div>
+                                <h5 class="card-title">管理评论</h5>
+                                <p class="card-text text-muted">维护社区氛围</p>
+                            </div>
                         </div>
-                    </div>
+                    </a>
                 </div>
             </div>
         </div>
     </main>
 
-    <!-- Footer -->
     <footer class="footer">
         <div class="container text-center">
-            <p class="mb-0">&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> MyBlog. All rights reserved.</p>
+            <p class="mb-0">© <span th:text="${#dates.year(#dates.createNow())}">2026</span> MyBlog · Admin Console · Powered by Spring Boot</p>
         </div>
     </footer>
 

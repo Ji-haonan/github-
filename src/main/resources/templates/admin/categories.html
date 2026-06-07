@@ -10,9 +10,9 @@
     <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
-            <a class="navbar-brand fw-bold" th:href="@{/}">MyBlog</a>
+            <a class="navbar-brand" th:href="@{/}">MyBlog</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -100,7 +100,7 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container text-center">
-            <p class="mb-0">&copy; <span th:text="${#dates.year(#dates.createNow())}">2026</span> MyBlog. All rights reserved.</p>
+            <p class="mb-0">© <span th:text="${#dates.year(#dates.createNow())}">2026</span> MyBlog · Powered by Spring Boot.</p>
         </div>
     </footer>
 

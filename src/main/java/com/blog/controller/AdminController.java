@@ -55,8 +55,16 @@ public class AdminController {
         checkAdmin();
         long articleCount = articleService.count();
         long commentCount = commentService.count();
+        long userCount = userService.count();
+        long viewCount = 0;
+        List<Article> allArticles = articleService.list();
+        for (Article a : allArticles) {
+            if (a.getViewCount() != null) viewCount += a.getViewCount();
+        }
         model.addAttribute("articleCount", articleCount);
         model.addAttribute("commentCount", commentCount);
+        model.addAttribute("userCount", userCount);
+        model.addAttribute("viewCount", viewCount);
         return "admin/dashboard";
     }
 
