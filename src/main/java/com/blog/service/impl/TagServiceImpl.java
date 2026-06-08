@@ -33,6 +33,6 @@ public class TagServiceImpl extends ServiceImpl<TagMapper, Tag> implements TagSe
         if (tagIds.isEmpty()) {
             return List.of();
         }
-        return tagMapper.selectBatchIds(tagIds);
+        return this.baseMapper.selectBatchIds(tagIds);
     }
 }
